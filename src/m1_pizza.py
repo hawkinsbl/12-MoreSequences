@@ -32,9 +32,9 @@ def main():
 
     # run_test_generate_points_on_circle()
     # run_test_draw_points_on_circle()
-    run_test_pizza()
-    # run_test_polygon()
-    # run_test_fancy_polygon()
+    #run_test_pizza()
+    #run_test_polygon()
+    run_test_fancy_polygon()
 
 
 def run_test_generate_points_on_circle():
@@ -363,7 +363,7 @@ def pizza(window, circle, number_of_slices, color, thickness):
 def run_test_polygon():
     """ Tests the   polygon   function. """
     # -------------------------------------------------------------------------
-    # TODO: 7. Implement this TEST function.
+    # Done: 7. Implement this TEST function.
     #   It TESTS the   polygon   function defined below.
     #   Include at least ** 1 ** ADDITIONAL test (that YOU write).
     #
@@ -395,6 +395,14 @@ def run_test_polygon():
     # -------------------------------------------------------------------------
     # Test 3:  (YOU write THIS test)
     # -------------------------------------------------------------------------
+    title = ('Polygon Test 3: 4 segments with red lines')
+    window = rg.RoseWindow(600, 600, title)
+
+    circle = rg.Circle(rg.Point(200, 200), 100)
+    circle.outline_thickness = 2
+    polygon(window, circle, 4, 'red', 10)
+
+    window.close_on_mouse_click()
 
 
 def polygon(window, circle, number_of_segments, color, thickness):
@@ -428,7 +436,7 @@ def polygon(window, circle, number_of_segments, color, thickness):
       :type thickness:          int
     """
     # -------------------------------------------------------------------------
-    # TODO: 8. Implement and test this function.
+    # Done: 8. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     #
     # IMPLEMENTATION REQUIREMENT:
@@ -436,12 +444,26 @@ def polygon(window, circle, number_of_segments, color, thickness):
     #    (defined above) to generate the relevant points,
     #    and then draw lines that are based in part on those points.
     # -------------------------------------------------------------------------
+    circle.attach_to(window)
+    points = generate_points_on_circle(circle, number_of_segments)
+    for k in range(number_of_segments - 1):
+        line = rg.Line(points[k], points[k+1])
+        line.color = color
+        line.thickness = thickness
+        line.attach_to(window)
+
+    line = rg.Line(points[len(points)-1], points[0])
+    line.color = color
+    line.thickness = thickness
+    line.attach_to(window)
+
+    window.render()
 
 
 def run_test_fancy_polygon():
     """ Tests the   fancy_polygon   function. """
     # -------------------------------------------------------------------------
-    # TODO: 9. Implement this TEST function.
+    # Done: 9. Implement this TEST function.
     #   It TESTS the   fancy_polygon   function defined below.
     #   Include at least ** 1 ** ADDITIONAL test (that YOU write).
     #
@@ -488,6 +510,12 @@ def run_test_fancy_polygon():
     #   For all these, filling the circles with one color and using
     #   a contrasting color for the lines makes them especially pretty.
     # -------------------------------------------------------------------------
+    title = ('Test 4, 100 segments with hops of 20')
+    window = rg.RoseWindow(900, 900, title)
+    circle = rg.Circle(rg.Point(450, 450), 200)
+    circle.fill_color = 'orange'
+    fancy_polygon(window, circle, 100, 20, 'yellow', 20)
+    window.close_on_mouse_click()
 
 
 def fancy_polygon(window, circle, number_of_lines, hops_to_next_point, color,
@@ -549,7 +577,7 @@ def fancy_polygon(window, circle, number_of_lines, hops_to_next_point, color,
       :type thickness:       int
     """
     # -------------------------------------------------------------------------
-    # TODO: 10. Implement and test this function.
+    # Done: 10. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     #
     # IMPLEMENTATION REQUIREMENT:
@@ -562,6 +590,18 @@ def fancy_polygon(window, circle, number_of_lines, hops_to_next_point, color,
     #       appropriately.  ASK YOUR INSTRUCTOR FOR AN EXAMPLE.
     ###########################################################################
     # -------------------------------------------------------------------------
+    points = generate_points_on_circle(circle, number_of_lines)
+    circle.attach_to(window)
+    for k in range(number_of_lines):
+        if k+hops_to_next_point >= number_of_lines:
+            line = rg.Line(points[k], points[k+hops_to_next_point-number_of_lines])
+        else:
+            line = rg.Line(points[k], points[k+hops_to_next_point])
+        line.thickness = thickness
+        line.color = color
+        line.attach_to(window)
+
+    window.render()
 
 
 # -----------------------------------------------------------------------------
